@@ -85,29 +85,44 @@ protected List<ReactPackage> getPackages() {
 ```
 
 ## Usage in React Native
-### Import the module
+### Import the module(s)
 ```
 import Vault from 'vault-wrapper';
+import { DeviceEventEmitter } from 'react-native';
 ```
 ### Authentication
-#### Add Account
+#### Check Account
+```
+VaultWallet.hasAccount((cb) => {
+  if (cb) {
+    console.log("we have an account")
+  } else {
+    console.log("we dont have an account")
+  }
+})
+```
+#### Add/Update Account
 ```
 vault.addAccount(jwt, userId, name, email)
 ```
 #### Remove Account
 ```
-vault.removeAccount(userId)
+vault.removeAccount()
 ```
 ### Realtime Connectivity Status
 #### Get current connected state
 ```
-var isConnected = vault.isConnected()
+VaultWallet.isConnected(
+  (connected) => {
+    console.log("Connected: " + connected)
+  }
+);
 ```
 #### Observing connected state
 ```
-vault.startObservingConnectivity(callback)
-...
-vault.stopObservingConnectivity(callback)
+DeviceEventEmitter.addListener('connectionChange', function(e: Event) {
+    console.log("Connected: " + e.connected)
+})
 ```
 
 ### Account Managment
@@ -115,13 +130,15 @@ vault.stopObservingConnectivity(callback)
 
 #### Get all **my** wallet accounts 
 ```
-var myWalletAccounts = vault.getWalletAccounts()
+VaultWallet.getWalletAccounts((walletAccounts) => {
+  console.log(walletAccounts)
+})
 ```
 #### Observing **my** wallet accounts
 ```
-vault.startObservingWalletAccounts(callback)
-...
-vault.stopObservingWalletAccounts(callback)
+DeviceEventEmitter.addListener('WalletAccounts', function(e: Event) {
+    console.log(e)
+});
 ```
 
 #### Get all shared accounts
