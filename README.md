@@ -1,88 +1,22 @@
-# Vault Wallet React Native Android Module
+# Vault Engine SDK Docuemtation
 
-Android Native Module wrapper for React Native clients. Customers can use vault wallet as a library to enable access to blockchain assets, key management, backup, contacts, price feed, and eventually smart contracts. 
+Vault Engine SDK enables projects to connect to blockchain focused devlopers to integrate key securty, token exhance, account abstraction, and many more features users expect today. By integrating with Vault Engine, devlopers can effecivly introduce a plug and play backend to your application, side stepping responsibility managing and maintaining all of the essential backend features listed here vaultwallet.io/VaultEngineSDK
 
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you give you the resources needed to integrate Vault Engine into your existing project, or building
 
-### Prerequisites
+~### Prerequisites~
 
-What things you need to install the software and how to install them
+~What things you need to install the software and how to install them~
 
 ```
 Working React Native Project with Android
 ```
 
-### Installing
+### ~Installing~ **Need actual bash/cmd install steps**
 
-A step by step series of examples that tell you how to get your React Native Project running with the Vault React Native wrapper
-
-#### Automatic
-Using npm
-
-```
-npm install --save vault-wrapper
-```
-
-Link react native
-
-```
-react-native link vault-wrapper
-```
-#### Or if you have trouble, make the following additions to the given files manually:
-
-**android/settings.gradle**
-
-Add the Vault wrapper as a new android module
-```
-include ':vault-wrapper'
-project(':vault-wrapper').projectDir = new File(rootProject.projectDir, '../node_modules/vault-wrapper/')
-```
-**android/build.gradle**
-
-Ensure that the `minSdkVersion`, `compileSdkVersion` and `targetSdkVersion` are set to a secure android level. Using a version too old is not supported as the OS will NOT automatically update security providers using the `AndroidKeyStore`. This is a requirement for our security model.
-```
-buildscript {
-	ext {
-        ...
-        minSdkVersion = 23
-        compileSdkVersion = 28
-        targetSdkVersion = 26
-        ...
-    }
-    ...
-}
-    
-```
-
-**android/app/build.gradle**
-Include the wrapper in your `app` module's build as a depenency
-```
-dependencies {
-   ...
-   implementation project(':vault-wrapper')
-```
-*Note if you are using an older version of gradle, you can use the now deprecated `compile` instead of `implementation`*
-
-**MainApplication.java**
-
-On top, where imports are:
-```
-import io.vaultwallet.sdk.wrapper.reactnative.VaultPackage;
-```
-Add the `new VaultPackage()` class to your list of exported packages.
-```
-@Override
-protected List<ReactPackage> getPackages() {
-    return Arrays.asList(
-            new MainReactPackage(),
-            new VaultPackage()
-    );
-}
-
-```
 
 ## Usage in React Native
 ### Import the module(s)
@@ -92,6 +26,9 @@ import { DeviceEventEmitter } from 'react-native';
 ```
 ### Authentication
 #### Check Account
+
+What does this return? Is this simply a boolean yes no the account exists?
+
 ```
 VaultWallet.hasAccount((cb) => {
   if (cb) {
@@ -102,15 +39,23 @@ VaultWallet.hasAccount((cb) => {
 })
 ```
 #### Add/Update Account
+
+Need more details onwhat the account is. Like is this the account that you AUTH into locally, or the 'account' used on the cloud to identify the user? What is jwt, where is userId initalized/come from? On the backend what does this call do? does it generate the wallet for the account? 
+
 ```
 vault.addAccount(jwt, userId, name, email)
 ```
 #### Remove Account
+
+Will resolve with clarity on the question above. 
 ```
 vault.removeAccount()
 ```
 ### Realtime Connectivity Status
 #### Get current connected state
+
+If you need to check if the wallet is currently connected to the blockchain through Vault Wallets backend servers use the following call. 
+
 ```
 VaultWallet.isConnected(
   (connected) => {
@@ -119,6 +64,7 @@ VaultWallet.isConnected(
 );
 ```
 #### Observing connected state
+What are the potental states here? 
 ```
 DeviceEventEmitter.addListener('connectionChange', function(e: Event) {
     console.log("Connected: " + e.connected)
@@ -128,13 +74,22 @@ DeviceEventEmitter.addListener('connectionChange', function(e: Event) {
 ### Account Managment
 **`WalletAccount` is an object representing the `publicAddress`, `type` and `nickname`**
 
+The following documentation is for managing accounts created by the user. 
+
 #### Get all **my** wallet accounts 
+By passing the public address of the account you can recieve information on the users accounts. (accounts = AUTH + wallets + contacts? need to define that)
+
+This is public key? What information is passed back in that obj? 
 ```
 VaultWallet.getWalletAccounts((walletAccounts) => {
   console.log(walletAccounts)
 })
 ```
 #### Observing **my** wallet accounts
+To setup a listenter for one of your wallets, so that you can recieve notifcations of changes in wallet activity, use the following call. 
+
+What are the exact conditions this is fired. Send/Recieve/TX pending etc? 
+
 ```
 DeviceEventEmitter.addListener('WalletAccounts', function(e: Event) {
     console.log(e)
@@ -143,6 +98,8 @@ DeviceEventEmitter.addListener('WalletAccounts', function(e: Event) {
 
 #### Get all shared accounts
 **`SharedAccount` is an object representing the `public address`, `type`, `isMyAccount`, `nickname`and `userId`** -- All the accounts you share to others and the accounts shared to you
+
+What does accounts shared with others mean? Is this addresses that are generated between you and a contact for the explict purpose of transacting? 
 ```
 var sharedAccounts = vault.getSharedAccounts()
 ```
@@ -202,6 +159,7 @@ vault.stopObservingTransactions(callback)
 
 ### Manage Connections
 #### Get all connections
+
 ```
 var connections = vault.getConnections()
 ```
