@@ -1,6 +1,6 @@
 # Vault Engine SDK Docuemtation
 
-Vault Engine SDK enables projects to connect to blockchain focused devlopers to integrate key securty, token exhance, account abstraction, and many more features users expect today. By integrating with Vault Engine, devlopers can effecivly introduce a plug and play backend to your application, side stepping responsibility managing and maintaining all of the essential backend features listed here vaultwallet.io/VaultEngineSDK
+By integrating with Vault Engine, devlopers can effecivly introduce a plug and play backend to your application, largly side stepping responsibility of devloping, managing, and maintaining many of the essential backend features critical to blockchain mobile dapp devlopment. A more percise overview of features is avaliable here vaultwallet.io/VaultEngineSDK
 
 
 ## Getting Started
@@ -18,7 +18,7 @@ Working React Native Project with Android
 ### ~Installing~ **Need actual bash/cmd install steps**
 
 
-## Usage in React Native
+## Usage in React Native 
 ### Import the module(s)
 ```
 import Vault from 'vault-wrapper';
@@ -40,7 +40,7 @@ VaultWallet.hasAccount((cb) => {
 ```
 #### Add/Update Account
 
-Need more details onwhat the account is. Like is this the account that you AUTH into locally, or the 'account' used on the cloud to identify the user? What is jwt, where is userId initalized/come from? On the backend what does this call do? does it generate the wallet for the account? 
+Need more details onwhat the account is. Like is this the account that you AUTH into locally, or the 'account' used on the cloud to identify the user? What is jwt, where is userId initalized/come from? On the backend what actions does this call peform for the 'account'? does it generate the wallet for the account etc? 
 
 ```
 vault.addAccount(jwt, userId, name, email)
@@ -124,11 +124,13 @@ var generatedMnemonicSeed = vault.generateSeed(wordSize)
 var keyAlias = vault.importMnemonic(menmonicString, addressIndex = 0)
 ```
 ### Get WalletAccount for KeyAlias
+This returns the alias directly? 
+
 ```
 val walletAccount = vault.getWalletAccount(keyAlias)
 ```
 #### Get Public Address of a Mnemonic
-*CryptoObject is used in conjunction with the SE/TEE to validate user biometric authentication (optional).*
+*CryptoObject is used in conjunction with the SE/TEE to validate user biometric authentication ~(optional)~.*
 
 
 *We are decomposing the key alias which has the public address of address 0 of the mnemonic*
@@ -151,6 +153,8 @@ var publicAddress = vault.createWallet(mnemonicString, nameOfWallet, addressInde
 var transactions = vault.getTransactions(walletAccounts)
 ```
 ### Observing transaction changes
+This means, when the TX is in a block, when it is considered to have finality? or what exactly is reported here? 
+
 ```
 vault.startObservingTransactions(walletAccounts, callback)
 ...
@@ -160,6 +164,7 @@ vault.stopObservingTransactions(callback)
 ### Manage Connections
 #### Get all connections
 
+These are the same as the shared connections? More details on whats going on here. 
 ```
 var connections = vault.getConnections()
 ```
@@ -198,6 +203,9 @@ vault.startObservingConnectionsRequests(callback)
 vault.stopObservingConnectionRequests(callback)
 ```
 #### Share an account
+
+Will need to have a section on the concept/behavior of shared accounts. Design idea behind this. 
+
 ```
 vault.shareAccount(userId, walletAccount)
 ```
