@@ -28,20 +28,7 @@ A shared account is type of key account in which the public key is publically av
 #### Connections
 Connections can be thought of as 'friends'. Using this feature of the SDK allows abstraction of public keys and surfacing of simple human readable account names associated defintivly with users. Akin to social features, connections can be sent, recieved, accepted, and denied. A master list of all connection names (users) is stored in the Vault Engine cloud backend so each instance can query a live list.  
 
-### Authentication
-#### Check Account
-
-What does this return? Is this simply a boolean yes no the account exists?
-
-```
-VaultWallet.hasAccount((cb) => {
-  if (cb) {
-    console.log("we have an account")
-  } else {
-    console.log("we dont have an account")
-  }
-})
-```
+### User Accounts and Authentication
 #### Add/Update Account
 
 Need more details onwhat the account is. Like is this the account that you AUTH into locally, or the 'account' used on the cloud to identify the user? What is jwt, where is userId initalized/come from? On the backend what actions does this call peform for the 'account'? does it generate the wallet for the account etc? 
@@ -55,6 +42,86 @@ Will resolve with clarity on the question above.
 ```
 vault.removeAccount()
 ```
+#### Check Account
+
+What does this return? Is this simply a boolean yes no the account exists?
+
+```
+VaultWallet.hasAccount((cb) => {
+  if (cb) {
+    console.log("we have an account")
+  } else {
+    console.log("we dont have an account")
+  }
+})
+```
+### Shared Accounts
+#### Share an account
+
+Will need to have a section on the concept/behavior of shared accounts. Design idea behind this. 
+
+```
+vault.shareAccount(userId, walletAccount)
+```
+#### Unshare an account
+```
+vault.unshareAccount(userId, walletAccount)
+````
+#### Get all shared accounts
+**`SharedAccount` is an object representing the `public address`, `type`, `isMyAccount`, `nickname`and `userId`** -- All the accounts you share to others and the accounts shared to you
+
+What does accounts shared with others mean? Is this addresses that are generated between you and a contact for the explict purpose of transacting? 
+```
+var sharedAccounts = vault.getSharedAccounts()
+```
+#### Observing shared accounts
+```
+vault.startObservingSharedAccounts(callback)
+...
+vault.stopObservingSharedAccounts(callback)
+```
+### Connections and Connection Management
+#### Get all connections
+
+These are the same as the shared connections? More details on whats going on here. 
+```
+var connections = vault.getConnections()
+```
+### Observing connections changes
+```
+vault.startObservingConnections(walletAccounts, callback)
+...
+vault.stopObservingConnections(callback)
+```
+#### Find a connection
+```
+vault.findConnection(searchQuery, callbackWithIds)
+```
+#### Add a connection
+```
+vault.addConnection(searchResultId)
+```
+
+#### Accept a connection request
+```
+vault.acceptConnectionRequest(userIdOrSearchResultId)
+```
+#### Decline a connection request
+```
+vault.declineConnectionRequest(userIdOrSearchResultId)
+```
+#### Get a pending connection request
+```
+var pendingRequests = vault.getPendingRequests()
+```
+
+#### Observe Pending Connection Requests
+```
+vault.startObservingConnectionsRequests(callback)
+...
+vault.stopObservingConnectionRequests(callback)
+```
+
 ### Realtime Connectivity Status
 #### Get current connected state
 
@@ -100,19 +167,7 @@ DeviceEventEmitter.addListener('WalletAccounts', function(e: Event) {
 });
 ```
 
-#### Get all shared accounts
-**`SharedAccount` is an object representing the `public address`, `type`, `isMyAccount`, `nickname`and `userId`** -- All the accounts you share to others and the accounts shared to you
 
-What does accounts shared with others mean? Is this addresses that are generated between you and a contact for the explict purpose of transacting? 
-```
-var sharedAccounts = vault.getSharedAccounts()
-```
-#### Observing shared accounts
-```
-vault.startObservingSharedAccounts(callback)
-...
-vault.stopObservingSharedAccounts(callback)
-```
 #### Delete/Stop tracking the account
 ```
 vault.deleteAccount(walletAccount)
@@ -165,58 +220,7 @@ vault.startObservingTransactions(walletAccounts, callback)
 vault.stopObservingTransactions(callback)
 ```
 
-### Manage Connections
-#### Get all connections
 
-These are the same as the shared connections? More details on whats going on here. 
-```
-var connections = vault.getConnections()
-```
-### Observing connections changes
-```
-vault.startObservingConnections(walletAccounts, callback)
-...
-vault.stopObservingConnections(callback)
-```
-#### Find a connection
-```
-vault.findConnection(searchQuery, callbackWithIds)
-```
-#### Add a connection
-```
-vault.addConnection(searchResultId)
-```
-
-#### Accept a connection request
-```
-vault.acceptConnectionRequest(userIdOrSearchResultId)
-```
-#### Decline a connection request
-```
-vault.declineConnectionRequest(userIdOrSearchResultId)
-```
-#### Get a pending connection request
-```
-var pendingRequests = vault.getPendingRequests()
-```
-
-#### Observe Pending Connection Requests
-```
-vault.startObservingConnectionsRequests(callback)
-...
-vault.stopObservingConnectionRequests(callback)
-```
-#### Share an account
-
-Will need to have a section on the concept/behavior of shared accounts. Design idea behind this. 
-
-```
-vault.shareAccount(userId, walletAccount)
-```
-#### Unshare an account
-```
-vault.unshareAccount(userId, walletAccount)
-````
 
 ### Send Transaction
 Sign and send transaction directly to blockchain
