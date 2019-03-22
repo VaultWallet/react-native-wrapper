@@ -42,24 +42,48 @@ Delete a user account an all associated data from the local device. This include
 ```
 vault.removeAccount()
 ```
-#### Check Account
+#### Check Account Exists
 Check if a account exists on the local device. 
 @Raul Details on arugment is needed
 ```
 VaultWallet.hasAccount(cb)
 ```
+### Key Account and Key Accout Managment
+#### Get all Key Accounts
+Retrieve a list of wallet key accounts associated with the current user account.
+```
+VaultWallet.getWalletAccounts((walletAccounts) => {
+  console.log(walletAccounts)
+})
+```
+### Get Key Account for KeyAlias
+Key accounts have an associated allias locally. You can pull for these key alias 
+
+```
+val walletAccount = vault.getWalletAccount(keyAlias)
+```
+#### Observing **my** Wallet Key Accounts
+To setup a listenter for one of your wallets, so that you can recieve notifcations of changes in wallet activity, use the following call. 
+```
+DeviceEventEmitter.addListener('WalletAccounts')
+```
+#### Delete/Stop tracking the account
+Delete a key account from the current user. This deletes the private key locally as well as all meta data associated with this key account. 
+```
+vault.deleteAccount(walletAccount)
+```
 ### Shared Accounts
-#### Share an account
+#### Share a key account with user
 Expose a current account as a shared account to a specified user on the service. 
 ```
 vault.shareAccount(userId, walletAccount)
 ```
-#### Unshare an account
+#### Unshare an key account with user
 Remove visibility of a shared account from a specified user on the service. 
 ```
 vault.unshareAccount(userId, walletAccount)
 ````
-#### Get all shared accounts
+#### Get all shared key accounts relationships
 Retrieve a list of all of the currently shared key accounts assoicated with the current user? 
 @Raul Some details on the context of this call? Does it take param for a user, is there some user state? 
 ```
@@ -118,31 +142,8 @@ vault.startObservingConnectionsRequests(callback)
 ...
 vault.stopObservingConnectionRequests(callback)
 ```
-### Key Account and Key Accout Managment
-#### Get all Key Accounts
-Retrieve a list of wallet key accounts associated with the current user account.
-```
-VaultWallet.getWalletAccounts((walletAccounts) => {
-  console.log(walletAccounts)
-})
-```
-### Get Key Account for KeyAlias
-Key accounts have an associated allias locally. You can pull for these key alias 
-
-```
-val walletAccount = vault.getWalletAccount(keyAlias)
-```
-#### Observing **my** Wallet Key Accounts
-To setup a listenter for one of your wallets, so that you can recieve notifcations of changes in wallet activity, use the following call. 
-```
-DeviceEventEmitter.addListener('WalletAccounts')
-```
-#### Delete/Stop tracking the account
-Delete a key account from the current user. This deletes the private key locally as well as all meta data associated with this key account. 
-```
-vault.deleteAccount(walletAccount)
-```
 ### Mnemonic
+Mnemonic's allow users to recover their private keys with a backup seed they have saved. Each user account should have a mnemonic associated with it so that wallets can be generated with them. It is considered best pratice to do this at the UX level faily soon after user account creation. 
 #### Generate a seed (word size can be 16, 20, 24, 28 or 32)
 ```
 var generatedMnemonicSeed = vault.generateSeed(wordSize)
@@ -152,59 +153,56 @@ var generatedMnemonicSeed = vault.generateSeed(wordSize)
 ```
 var keyAlias = vault.importMnemonic(menmonicString, addressIndex = 0)
 ```
-
 #### Get Public Address of a Mnemonic
 *CryptoObject is used in conjunction with the SE/TEE to validate user biometric authentication ~(optional)~.*
-
-
 *We are decomposing the key alias which has the public address of address 0 of the mnemonic*
 ```
 val publicAddress = vault.getPublicAddress(mnemonicString, addressIndex = 0)
 // OR
 val publicAddress = vault.getPublicAddress(keyAlias, addressIndex = 0, cryptoObject?)
 ```
-
+#### Show Mnemonic
+```
+vault.showMnemonic(keyAlias, cryptoObject?, callback)
+```
+#### Cloud backup - Keep or leave? 
+```
+vault.cloudBackup(keyAlias, cryptoObject?, callback)
+```
+#### Import cloud backup - Keep or leave? 
+```
+vault.importCloud()
+```
 #### Generate Another wallet from a mnemonic
-*Automatically add the account address to backend*
+Generate a key account which is recoverable with the user accounts stored mnemonic
 ```
 var publicAddress = vault.createWallet(keyAlias, nameOfWallet, addressIndex = 0, cryptoObject?)
 // OR
 var publicAddress = vault.createWallet(mnemonicString, nameOfWallet, addressIndex = 0, cryptoObject?)
 ```
 
-### Get Transactions
+### Get Transactions for Specific Key Accounts
 ```
 var transactions = vault.getTransactions(walletAccounts)
 ```
-### Observing transaction changes
-This means, when the TX is in a block, when it is considered to have finality? or what exactly is reported here? 
-
+### Observing Transactions on Specfic Key Accounts
 ```
 vault.startObservingTransactions(walletAccounts, callback)
 ...
 vault.stopObservingTransactions(callback)
 ```
 ### Send Transaction
-Sign and send transaction directly to blockchain
+Sign and send a transaction to the blockchain
+> * accountFromKeyAlias - 
+> * toAddress - 
+> * value - 
+> * cryptoObject? - 
 ```
 vault.postTransaction(accountFromkeyAlias, toAddress, value, cyrptoObject?, callback)
 ```
-### Backup
-#### Show Mnemonic
-```
-vault.showMnemonic(keyAlias, cryptoObject?, callback)
-```
-#### Cloud backup
-```
-vault.cloudBackup(keyAlias, cryptoObject?, callback)
-```
-#### Import cloud backup
-```
-vault.importCloud()
-```
+
 ### Realtime Connectivity Status
 #### Get current connected state
-
 If you need to check if the wallet is currently connected to the blockchain through Vault Wallets backend servers use the following call. 
 
 ```
@@ -215,7 +213,7 @@ VaultWallet.isConnected(
 );
 ```
 #### Observing connected state
-What are the potental states here? 
+Listener will notify if the Wallet is connected or disconnected to the internet. 
 ```
 DeviceEventEmitter.addListener('connectionChange', function(e: Event) {
     console.log("Connected: " + e.connected)
