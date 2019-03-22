@@ -48,6 +48,7 @@ Check if a account exists on the local device.
 ```
 VaultWallet.hasAccount(cb)
 ```
+> * cb -
 ### Key Account and Key Accout Managment
 #### Get all Key Accounts
 Retrieve a list of wallet key accounts associated with the current user account.
@@ -58,31 +59,37 @@ VaultWallet.getWalletAccounts((walletAccounts) => {
 ```
 ### Get Key Account for KeyAlias
 Key accounts have an associated allias locally. You can pull for these key alias 
-
 ```
 val walletAccount = vault.getWalletAccount(keyAlias)
 ```
+> * keyAlias 
 #### Observing **my** Wallet Key Accounts
 To setup a listenter for one of your wallets, so that you can recieve notifcations of changes in wallet activity, use the following call. 
 ```
-DeviceEventEmitter.addListener('WalletAccounts')
+DeviceEventEmitter.addListener(walletAccounts)
 ```
+> * walletAccounts - 
 #### Delete/Stop tracking the account
 Delete a key account from the current user. This deletes the private key locally as well as all meta data associated with this key account. 
 ```
 vault.deleteAccount(walletAccount)
 ```
+> * walletAccount -
 ### Shared Accounts
 #### Share a key account with user
 Expose a current account as a shared account to a specified user on the service. 
 ```
 vault.shareAccount(userId, walletAccount)
 ```
+> * userId - 
+> * walletAccount - 
 #### Unshare an key account with user
 Remove visibility of a shared account from a specified user on the service. 
 ```
 vault.unshareAccount(userId, walletAccount)
 ````
+> * userId - 
+> * walletAccount - 
 #### Get all shared key accounts relationships
 Retrieve a list of all of the currently shared key accounts assoicated with the current user? 
 @Raul Some details on the context of this call? Does it take param for a user, is there some user state? 
@@ -110,21 +117,25 @@ vault.startObservingConnections(walletAccounts, callback)
 ...
 vault.stopObservingConnections(callback)
 ```
+> * walletAccount - 
 #### Find a connection
 Query the vault wallet server for a particular user based on the searchQuery string. 
 ```
 vault.findConnection(searchQuery, callbackWithIds)
 ```
+> * searchQuery - String containing search query ex. John Smith
 #### Add a connection
 Add a connection to your local connection list and send a connection request to the corrosponding user (think friend request). 
 ```
-vault.addConnection(searchResultId)
+vault.addConnection(userId)
 ```
+> * userId - user ID recieved from the findConnection(...) call 
 #### Accept a connection request
 Accept a currently pending connection request
 ```
 vault.acceptConnectionRequest(userIdOrSearchResultId)
 ```
+> * userIdOrSearchResultID - user ID recieved from the findConnection(...) call SAME THING?????
 #### Decline a connection request
 Decline a currently pending connection request
 ```
@@ -144,15 +155,18 @@ vault.stopObservingConnectionRequests(callback)
 ```
 ### Mnemonic
 Mnemonic's allow users to recover their private keys with a backup seed they have saved. Each user account should have a mnemonic associated with it so that wallets can be generated with them. It is considered best pratice to do this at the UX level faily soon after user account creation. 
-#### Generate a seed (word size can be 16, 20, 24, 28 or 32)
+#### Generate a Mnemonic seed
 ```
 var generatedMnemonicSeed = vault.generateSeed(wordSize)
 ```
+> * wordSize - Word Size can be 16, 20, 24, 28 or 32, larger is more secure.
 #### Import from seed (or generate). 
 *This will register the `WalletAccount` automatically with the backend. The key alias can be public -- no need to treat it like a password.*
 ```
 var keyAlias = vault.importMnemonic(menmonicString, addressIndex = 0)
 ```
+> * mnemonicString -
+> * addressIndex- 
 #### Get Public Address of a Mnemonic
 *CryptoObject is used in conjunction with the SE/TEE to validate user biometric authentication ~(optional)~.*
 *We are decomposing the key alias which has the public address of address 0 of the mnemonic*
@@ -161,14 +175,22 @@ val publicAddress = vault.getPublicAddress(mnemonicString, addressIndex = 0)
 // OR
 val publicAddress = vault.getPublicAddress(keyAlias, addressIndex = 0, cryptoObject?)
 ```
+> * mnemonicString -
+> * value addressIndex- 
+> * cryptoObject? - 
 #### Show Mnemonic
 ```
 vault.showMnemonic(keyAlias, cryptoObject?, callback)
 ```
+> * keyAlias - 
+> * cryptoObject? -
+
 #### Cloud backup - Keep or leave? 
 ```
 vault.cloudBackup(keyAlias, cryptoObject?, callback)
 ```
+> * keyAlias - 
+> * cryptoObject? -
 #### Import cloud backup - Keep or leave? 
 ```
 vault.importCloud()
@@ -180,6 +202,10 @@ var publicAddress = vault.createWallet(keyAlias, nameOfWallet, addressIndex = 0,
 // OR
 var publicAddress = vault.createWallet(mnemonicString, nameOfWallet, addressIndex = 0, cryptoObject?)
 ```
+> * mnemonicString - 
+> * nameOfWallet - 
+> * value addressIndex- 
+> * cryptoObject? - 
 
 ### Get Transactions for Specific Key Accounts
 ```
@@ -193,13 +219,13 @@ vault.stopObservingTransactions(callback)
 ```
 ### Send Transaction
 Sign and send a transaction to the blockchain
+```
+vault.postTransaction(accountFromkeyAlias, toAddress, value, cyrptoObject?, callback)
+```
 > * accountFromKeyAlias - 
 > * toAddress - 
 > * value - 
 > * cryptoObject? - 
-```
-vault.postTransaction(accountFromkeyAlias, toAddress, value, cyrptoObject?, callback)
-```
 
 ### Realtime Connectivity Status
 #### Get current connected state
