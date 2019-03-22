@@ -57,12 +57,13 @@ VaultWallet.getWalletAccounts((walletAccounts) => {
   console.log(walletAccounts)
 })
 ```
+> * walletAccounts -
 ### Get Key Account for KeyAlias
 Key accounts have an associated allias locally. You can pull for these key alias 
 ```
 val walletAccount = vault.getWalletAccount(keyAlias)
 ```
-> * keyAlias 
+> * keyAlias - 
 #### Observing **my** Wallet Key Accounts
 To setup a listenter for one of your wallets, so that you can recieve notifcations of changes in wallet activity, use the following call. 
 ```
