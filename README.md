@@ -1,6 +1,6 @@
 # Vault Engine SDK Documentation
 
-By integrating with Vault Engine, developers can effectively introduce a plug and play blockchain interface to your application, largely side stepping responsibility of developing, managing, and maintaining much of the essential infrastructure critical to blockchain dapp development. For a high level overview of what Vault Engine offers, checkout http://vaultwallet.io/VaultEngineSDK
+By integrating with Vault Engine, developers can effectively introduce a plug and play blockchain interface to your application, largely side stepping responsibility of developing, managing, and maintaining much of the essential infrastructure critical to blockchain dapp development. For a high level overview of what Vault Engine offers, checkout https://vaultwallet.io/vaultenginelandingpage/
 
 
 ## Getting Started
