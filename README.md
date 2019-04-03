@@ -1,6 +1,6 @@
 # Vault Engine SDK Documentation
 
-By integrating with Vault Engine, developers can effectively introduce a plug and play blockchain interface to your application, largely side stepping responsibility of developing, managing, and maintaining much of the essential infrastructure critical to blockchain dapp development. For a high level overview of what Vault Engine offers, checkout vaultwallet.io/VaultEngineSDK
+By integrating with Vault Engine, developers can effectively introduce a plug and play blockchain interface to your application, largely side stepping responsibility of developing, managing, and maintaining much of the essential infrastructure critical to blockchain dapp development. For a high level overview of what Vault Engine offers, checkout http://vaultwallet.io/VaultEngineSDK
 
 
 ## Getting Started
@@ -128,12 +128,6 @@ Wallet accounts have a keyAlias that can be used to retrieve wallet account obje
 val walletAccount = vault.getWalletAccount(keyAlias)
 ```
 > * keyAlias - public address of account
-#### Observing **my** Wallet Accounts
-To setup a listener for one of your wallets, so that you can receive notifications of changes in wallet activity, use the following call. 
-```
-DeviceEventEmitter.addListener(walletAccounts)
-```
-> * walletAccounts - Array of wallet accounts
 
 ### Connections and Connection Management
 #### Find a connection
@@ -176,7 +170,7 @@ vault.startObservingConnectionsRequests(callback)
 ...
 vault.stopObservingConnectionRequests(callback)
 ```
-### Start/Stop Observing connections changes
+#### Start/Stop Observing connections changes
 Place a listener on connections. For example, I wish to know when another user x has accepted my connection request. 
 ```
 vault.startObservingConnections(callback)
