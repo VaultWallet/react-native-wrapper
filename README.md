@@ -210,11 +210,20 @@ vault.stopObservingSharedAccounts(callback)
 ### Transactions
 
 #### Get Transactions for a specific wallet account
+Transactions include ERC20 tokens for ethereum. We can add ERC20 tokens as required by customers. 
 ```
 var transactions = vault.getTransactions(walletAccount, type)
 ```
 > * walletAccount - public address of account
 > * type - ethereum, bitcoin, aion  
+#### Get only ERC20/ERC721 Transactions from a specific wallet account 
+We can add ERC20 token support as required by customers. 
+```
+var transactions = vault.getContractTransactions(walletAccount, type, contractAddress)
+```
+> * walletAccount - public address of account
+> * type - ethereum, bitcoin, aion  
+> * contractAddress - address of ERC20 contract. 
 #### Get Balance of a specific wallet account
 ```
 var transactions = vault.getBalance(walletAccount, type)
@@ -222,6 +231,7 @@ var transactions = vault.getBalance(walletAccount, type)
 > * walletAccount - public address of account
 > * type - ethereum, bitcoin, aion  
 #### Observe for new transactions for all wallet accounts
+After an account is added using `vault.addAccount(nickname, publicAddress)`, observe will trigger a callback for all new transactions from those accounts. This includes ERC20 tokens supported by Vault. We can add ERC20s as required by customers. 
 ```
 vault.startObservingTransactions(callback)
 ...
